@@ -1,8 +1,8 @@
 #!/bin/sh
-# version 1.2 18-July 2024
+# version 1.# 2-June 2025
 
 # in theory it should work like this using Linux json query "jq"
-#lab_sku=`echo '{"username":"callb@vmware.com","tenant":"hol-test","lab":"HOL-8803-01"}' | jq '. | .lab' | sed s/\"//g`
+#lab_sku=$(echo '{"username":"callb@vmware.com","tenant":"hol-test","lab":"HOL-8803-01"}' | jq '. | .lab' | sed s/\"//g)
 
 # but what we get is this without the quotes so jq will not process
 #vlp="{username:callb@vmware.com,tenant:hol-test,lab:HOL-8803-01}"
@@ -16,17 +16,17 @@ prepoptxt=/tmp/prepop.txt
 
 # save in /home/holuser/prepop.txt in case review is needed
 cp $prepoptxt /home/holuser/prepop.txt
-rawvlp=`cat $prepoptxt`
+rawvlp=$(cat $prepoptxt)
 
-tenant=`cat $prepoptxt | cut -f1 -d ':' | cut -f1 -d',' | sed s/}//g`
+tenant=$(cat $prepoptxt | cut -f1 -d ':' | cut -f1 -d',' | sed s/}//g)
 [ -z "${tenant}" ] && tenant=""
-lab_sku=`cat $prepoptxt | cut -f2 -d ':' | cut -f1 -d',' | sed s/}//g`
+lab_sku=$(cat $prepoptxt | cut -f2 -d ':' | cut -f1 -d',' | sed s/}//g)
 [ -z "${lab_sku}" ] && lab_sku=""
-student=`cat $prepoptxt | cut -f3 -d ':' | cut -f1 -d',' | sed s/}//g`
+student=$(cat $prepoptxt | cut -f3 -d ':' | cut -f1 -d',' | sed s/}//g)
 [ -z "${student}" ] || [ "${student}" = "unknown" ] && student=""
-class=`cat $prepoptxt | cut -f4 -d ':' | cut -f1 -d',' | sed s/}//g`
+class=$(cat $prepoptxt | cut -f4 -d ':' | cut -f1 -d',' | sed s/}//g)
 [ -z "${class}" ] && class=""
-dp=`cat $prepoptxt | cut -f5 -d ':' | sed s/}//g`
+dp=$(cat $prepoptxt | cut -f5 -d ':' | sed s/}//g)
 [ -z "${dp}" ] && dp=""
 
 # this is the order of fields
@@ -40,7 +40,7 @@ vlp="${tenant}:${lab_sku}:${student}:${class}:${dp}"
 rm $prepoptxt
 
 # /home/holuser/labstartup.sh creates the vPod_SKU.txt from the config.ini on the Main Console
-vPod_SKU=`cat /tmp/vPod_SKU.txt`
+vPod_SKU=$(cat /tmp/vPod_SKU.txt)
 holroot=/home/holuser/hol
 lmcholroot=/lmchol/hol
 wmcholroot=/wmchol/hol
@@ -73,9 +73,9 @@ echo "Here is the full prepop message from VLP: $rawvlp" >> $logfile
 # update the desktop display if needed
 # probably leave desktop display update to labstart.sh instead
 #if [ ! -z "${lab_sku}" ];then
-#   needed=`grep $lab_sku $desktopcfg`
+#   needed=$(grep $lab_sku $desktopcfg)
 #else
-#   needed=`grep $vlp $desktopcfg`
+#   needed=$(grep $vlp $desktopcfg)
 #fi
 
 #if [ -z "$needed" ];then
